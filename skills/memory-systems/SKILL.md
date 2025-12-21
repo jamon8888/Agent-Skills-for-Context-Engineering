@@ -55,7 +55,7 @@ The Deep Memory Retrieval (DMR) benchmark provides concrete performance data acr
 | Vector RAG | ~60-70% | Fast | Loses relationship structure |
 | Recursive Summarization | 35.3% | Low | Severe information loss |
 
-Zep demonstrated 90% reduction in retrieval latency compared to full-context baselines (2.58s vs 28.9s for GPT-4o). This efficiency comes from retrieving only relevant subgraphs rather than entire context history.
+Zep demonstrated 90% reduction in retrieval latency compared to full-context baselines (2.58s vs 28.9s for GPT-5.2). This efficiency comes from retrieving only relevant subgraphs rather than entire context history.
 
 GraphRAG achieves approximately 20-35% accuracy gains over baseline RAG in complex reasoning tasks and reduces hallucination by up to 30% through community-based summarization.
 

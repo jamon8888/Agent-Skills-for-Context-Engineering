@@ -35,7 +35,7 @@ Research on the BrowseComp evaluation (which tests browsing agents' ability to l
 
 This finding has significant implications for evaluation design:
 - **Token budgets matter**: Evaluate agents with realistic token budgets, not unlimited resources
-- **Model upgrades beat token increases**: Upgrading to Claude Sonnet 4 provides larger gains than doubling token budget on Claude Sonnet 3.7
+- **Model upgrades beat token increases**: Upgrading to Claude Sonnet 4.5 or GPT-5.2 provides larger gains than doubling token budgets on previous versions
 - **Multi-agent validation**: The finding validates architectures that distribute work across agents with separate context windows
 
 ## Detailed Topics

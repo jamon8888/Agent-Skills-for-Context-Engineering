@@ -32,13 +32,13 @@ def estimate_token_count(text: str) -> int:
     Uses approximation: ~4 characters per token for English.
     
     WARNING: This is a rough estimate. Actual tokenization varies by:
-    - Model (GPT-4, Claude, etc. have different tokenizers)
+    - Model (GPT-5.2, Claude 4.5, Gemini 3 have different tokenizers)
     - Content type (code typically has higher token density)
     - Language (non-English may have 2-3x higher token/char ratio)
     
     Production usage:
         import tiktoken
-        enc = tiktoken.encoding_for_model("gpt-4")
+        enc = tiktoken.encoding_for_model("gpt-4")  # Use appropriate model
         token_count = len(enc.encode(text))
     """
     return len(text) // 4

@@ -92,24 +92,25 @@ Resolution approaches include explicit conflict marking that identifies contradi
 Research provides concrete data on degradation patterns that inform design decisions.
 
 **RULER Benchmark Findings**
-The RULER benchmark delivers sobering findings: only 50% of models claiming 32K+ context maintain satisfactory performance at 32K tokens. GPT-4 showed the least degradation (15.4 points from 4K to 128K), while most models dropped 30+ points. Near-perfect scores on simple needle-in-haystack tests do not translate to real long-context understanding.
+The RULER benchmark delivers sobering findings: only 50% of models claiming 32K+ context maintain satisfactory performance at 32K tokens. GPT-5.2 shows the least degradation among current models, while many still drop 30+ points at extended contexts. Near-perfect scores on simple needle-in-haystack tests do not translate to real long-context understanding.
 
 **Model-Specific Degradation Thresholds**
 | Model | Degradation Onset | Severe Degradation | Notes |
 |-------|-------------------|-------------------|-------|
-| GPT-4 | ~32K tokens | ~128K tokens | Lowest overall degradation |
-| Gemini 2.5 Pro | ~750 words | ~5K words | Random word generation on repetition tasks |
-| Claude | Varies | Varies | Lower hallucination but higher abstention |
-| Qwen3-8B | ~5K words | ~10K words | Incoherent text generation observed |
+| GPT-5.2 | ~64K tokens | ~200K tokens | Best overall degradation resistance with thinking mode |
+| Claude Opus 4.5 | ~100K tokens | ~180K tokens | 200K context window, strong attention management |
+| Claude Sonnet 4.5 | ~80K tokens | ~150K tokens | Optimized for agents and coding tasks |
+| Gemini 3 Pro | ~500K tokens | ~800K tokens | 1M context window, native multimodality |
+| Gemini 3 Flash | ~300K tokens | ~600K tokens | 3x speed of Gemini 2.5, 81.2% MMMU-Pro |
 
 **Model-Specific Behavior Patterns**
 Different models exhibit distinct failure modes under context pressure:
 
-- **Claude**: Lowest hallucination rates but high abstention under ambiguity. When uncertain, Claude tends to refuse or ask for clarification rather than fabricate.
-- **GPT**: Highest hallucination rates with confident-but-incorrect responses. More likely to generate plausible-sounding but factually wrong outputs.
-- **Gemini**: Began generating random words not present in input after certain thresholds on synthetic tasks.
+- **Claude 4.5 series**: Lowest hallucination rates with calibrated uncertainty. Claude Opus 4.5 achieves 80.9% on SWE-bench Verified. Tends to refuse or ask clarification rather than fabricate.
+- **GPT-5.2**: Two modes available - instant (fast) and thinking (reasoning). Thinking mode reduces hallucination through step-by-step verification but increases latency.
+- **Gemini 3 Pro/Flash**: Native multimodality with 1M context window. Gemini 3 Flash offers 3x speed improvement over previous generation. Strong at multi-modal reasoning across text, code, images, audio, and video.
 
-These patterns inform model selection for different use cases. High-stakes tasks may prefer Claude's conservative abstention; exploratory tasks may tolerate GPT's confident generation.
+These patterns inform model selection for different use cases. High-stakes tasks benefit from Claude 4.5's conservative approach or GPT-5.2's thinking mode; speed-critical tasks may use instant modes.
 
 ### Counterintuitive Findings
 
