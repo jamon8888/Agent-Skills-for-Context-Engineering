@@ -1,0 +1,15 @@
+{
+  "name": "context-engineering-marketplace",
+  "description": "Marketplace for Context Engineering skills library",
+  "plugins": [
+    {
+      "name": "context-engineering",
+      "description": "Agent skills for context engineering: fundamentals, compression, multi-agent patterns, memory systems, and evaluation frameworks",
+      "version": "1.0.0",
+      "source": "./",
+      "author": {
+        "name": "Muratcan Koylan"
+      }
+    }
+  ]
+}

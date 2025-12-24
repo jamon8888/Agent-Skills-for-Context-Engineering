@@ -1,0 +1,12 @@
+{
+  "name": "context-engineering",
+  "description": "Agent skills for context engineering: fundamentals, compression, multi-agent patterns, memory systems, and evaluation frameworks",
+  "version": "1.0.0",
+  "author": {
+    "name": "Muratcan Koylan"
+  },
+  "homepage": "https://github.com/muratcankoylan/Agent-Skills-for-Context-Engineering",
+  "repository": "https://github.com/muratcankoylan/Agent-Skills-for-Context-Engineering",
+  "license": "MIT",
+  "keywords": ["context-engineering", "skills", "agents", "memory", "evaluation"]
+}
