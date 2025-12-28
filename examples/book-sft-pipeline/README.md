@@ -1,35 +1,40 @@
 # Book SFT Pipeline
 
-A complete example for training small language models to write in any author's style using supervised fine-tuning. Part of the [Agent Skills for Context Engineering](../../README.md) collection.
+A standalone skill for training language models to write in any author's style. This is a **separate plugin** from the main Context Engineering collection.
 
-## Overview
+## Installation
 
-This example demonstrates an end-to-end agent system for:
-- Extracting and segmenting text from books (ePub format)
-- Generating diverse synthetic instructions for SFT
-- Training LoRA adapters on Tinker
-- Validating style transfer with modern scenarios
+### Claude Code
 
-## Skills Applied
+```bash
+# Add the marketplace first
+/plugin marketplace add muratcankoylan/Agent-Skills-for-Context-Engineering
 
-This example integrates multiple context engineering skills:
+# Install the book-sft-pipeline plugin
+/plugin install book-sft-pipeline@context-engineering-marketplace
+```
 
-| Skill | Application |
-|-------|-------------|
-| [project-development](../../skills/project-development/) | Staged pipeline architecture (acquire, prepare, process, parse, render) |
-| [context-compression](../../skills/context-compression/) | Two-tier segmentation strategy for optimal chunk density |
-| [multi-agent-patterns](../../skills/multi-agent-patterns/) | Orchestrator + specialized agents pattern |
-| [evaluation](../../skills/evaluation/) | Modern scenario testing, originality verification |
-| [context-fundamentals](../../skills/context-fundamentals/) | Prompt diversity prevents attention collapse |
+### Cursor / Codex / IDE
 
-## Structure
+Copy `SKILL.md` to your `.rules` or project skills folder.
+
+### Manual
+
+Reference the `SKILL.md` file directly in your agent's context.
+
+## What's Included
 
 ```
 book-sft-pipeline/
 ├── README.md                 # This file
-├── SKILL.md                  # Main skill documentation
+├── SKILL.md                  # Complete skill documentation (standalone)
 ├── examples/
-│   └── gertrude-stein/       # Real training example with outputs
+│   └── gertrude-stein/       # Complete case study with real outputs
+│       ├── README.md         # Results and analysis
+│       ├── sample_outputs.md # Raw model outputs
+│       ├── training_config.json
+│       ├── dataset_sample.jsonl
+│       └── pangram/          # AI detector screenshots
 ├── scripts/
 │   └── pipeline_example.py   # Conceptual implementation
 └── references/
@@ -37,12 +42,6 @@ book-sft-pipeline/
     ├── tinker-format.md
     └── tinker.txt
 ```
-
-## Quick Start
-
-1. Read `SKILL.md` for the complete methodology
-2. Review `examples/gertrude-stein/` for a real implementation
-3. Adapt `scripts/pipeline_example.py` for your use case
 
 ## Key Results
 
@@ -56,14 +55,22 @@ Trained Qwen3-8B-Base on Gertrude Stein's "Three Lives" (1909):
 | Training time | 15 minutes |
 | Total cost | $2 |
 
-## Why This Matters for Context Engineering
+## Related Context Engineering Skills
 
-While this example focuses on fine-tuning rather than inference-time context, the principles transfer:
+This skill applies patterns from the [Agent Skills for Context Engineering](../../README.md) collection:
 
-1. **Segmentation is compression**: Breaking long content into coherent chunks is the same problem as managing long context windows
-2. **Information density**: Smaller, high-signal chunks outperform larger, diluted ones
-3. **Prompt diversity**: Prevents attention from collapsing onto surface patterns
-4. **Staged pipelines**: Idempotent phases enable debugging and optimization
+| Skill | Application |
+|-------|-------------|
+| [project-development](../../skills/project-development/) | Staged pipeline architecture |
+| [context-compression](../../skills/context-compression/) | Segmentation strategy |
+| [multi-agent-patterns](../../skills/multi-agent-patterns/) | Orchestrator pattern |
+| [evaluation](../../skills/evaluation/) | Modern scenario testing |
+| [context-fundamentals](../../skills/context-fundamentals/) | Prompt diversity |
+
+## Resources
+
+- [Dataset on Hugging Face](https://huggingface.co/datasets/MuratcanKoylan/gertrude-stein-style-sft)
+- [Research Paper](https://arxiv.org/pdf/2510.13939) (Chakrabarty et al. 2025)
 
 ## License
 

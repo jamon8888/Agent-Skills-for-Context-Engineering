@@ -352,18 +352,29 @@ Prompt diversity prevents attention collapse on single patterns. When training w
 
 ## References
 
+Internal references:
 - [Segmentation Strategies](./references/segmentation-strategies.md) - Text chunking patterns
 - [Tinker Format Specification](./references/tinker-format.md) - Datum structure
 - [Tinker API Documentation](./references/tinker.txt) - Full API reference
 
-Related skills in this collection:
-- [project-development](../../skills/project-development/) - Pipeline architecture patterns
-- [context-compression](../../skills/context-compression/) - Compression strategies
-- [multi-agent-patterns](../../skills/multi-agent-patterns/) - Agent coordination
-- [evaluation](../../skills/evaluation/) - Evaluation frameworks
-- [context-fundamentals](../../skills/context-fundamentals/) - Attention and information density
+Related skills from Agent Skills for Context Engineering:
+- project-development - Pipeline architecture patterns
+- context-compression - Compression strategies  
+- multi-agent-patterns - Agent coordination
+- evaluation - Evaluation frameworks
+- context-fundamentals - Attention and information density
+
+External resources:
+- [Research Paper](https://arxiv.org/pdf/2510.13939) - Chakrabarty et al. 2025
+- [Dataset on Hugging Face](https://huggingface.co/datasets/MuratcanKoylan/gertrude-stein-style-sft)
+- [Gertrude Stein Case Study](./examples/gertrude-stein/) - Complete working example
 
 ---
 
+## Skill Metadata
+
 **Created**: 2025-12-26
+**Last Updated**: 2025-12-28
+**Author**: Muratcan Koylan
 **Version**: 2.0.0
+**Standalone**: Yes (separate from main context-engineering collection)
