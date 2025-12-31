@@ -95,14 +95,6 @@ Option B - Direct install via command:
 /plugin install agent-development@context-engineering-marketplace
 ```
 
-### Local Development
-
-For testing changes locally before pushing:
-
-```bash
-claude --plugin-dir /path/to/Agent-Skills-for-Context-Engineering
-```
-
 ### Available Plugins
 
 | Plugin | Skills Included |
