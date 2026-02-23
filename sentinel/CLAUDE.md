@@ -197,6 +197,107 @@ At 70-80% utilization, generate an Anchored Iterative Summary:
 ### Current State
 ### Next Steps
 
+## Degradation Indicators
+
+### Failure Symptoms
+- **Lost-in-middle**: Information placed in context middle receives 10-40% lower recall accuracy
+- **Context poisoning**: Degraded output quality, tool misalignment, persistent hallucinations — usually from contradictory or stale content accumulating
+- **Confusion**: Agent contradicts prior tool outputs or misapplies instructions from 3+ turns ago
+- **Context clash**: Two valid-but-conflicting facts in context with no versioning — agent oscillates
+
+### Model-Specific Degradation Thresholds
+| Model | Degradation Onset | Severe Degradation |
+|-------|-------------------|-------------------|
+| Claude Sonnet 4.6 | ~80K tokens | ~150K tokens |
+| Claude Opus 4.6 | ~100K tokens | ~180K tokens |
+
+### Recovery Protocol
+1. If poisoning suspected: identify the offending turn, truncate to before it
+2. Restart with verified-only information; flag the discard explicitly
+3. Never retry the same prompt on a poisoned context — it will reproduce the same failure
+4. If confusion persists after truncation: start fresh session, pass only the 3 most critical facts
+
+### Prevention
+- Compress at 70-80% before reaching degradation onset
+- Validate retrieved documents before adding to context
+- Segment long-running tasks at logical boundaries
+- Keep a single source of truth per fact — no duplicates at different versions
+
+**Sentinel-specific**: Degradation most common in long deliberation sessions with multiple frameworks active. Symptom: MAP scores from an earlier analysis contaminate the current one (anchoring). The Session Isolation Reminder (Anti-Bias Protocol §6) exists precisely for this — always run separate sessions per decision.
+
+## Memory Layers
+
+Five-layer memory architecture. Use the simplest layer that solves the problem.
+
+| Layer | Persistence | Implementation | When to Use |
+|-------|-------------|----------------|-------------|
+| **Working** | Context window only | System prompt scratchpad | Always — optimize with attention-favored positions (start/end) |
+| **Short-term** | Session-scoped | In-memory / temp files | Intermediate tool results, conversation state |
+| **Long-term** | Cross-session | Key-value files (data/) | User preferences, domain knowledge, entity registries |
+| **Entity** | Cross-session | Entity registry (data/) | Identity consistency — same person/company across sessions |
+| **Temporal KG** | Cross-session + history | Graph with validity dates | Facts that change over time; prevents context clash |
+
+**Sentinel memory mapping:**
+| Layer | What lives here |
+|-------|----------------|
+| Working | Active decision being analyzed this turn |
+| Short-term | Current session bias checks + MAP scores |
+| Long-term | `data/decision-ledger.json`, `data/bias-profile.json` |
+| Entity | Decisions + predictions (tracked for calibration across sessions) |
+
+Start with filesystem memory. Add complexity only when retrieval quality degrades.
+Consolidate decision ledger at monthly intervals. Never discard resolved predictions — calibration needs history.
+
+## Context Isolation Protocol
+
+Sub-agents exist to isolate context, not to anthropomorphize roles.
+Each sub-agent should operate in clean context focused on its specific subtask.
+
+### Isolation Mechanisms
+1. **Full context delegation** — Sub-agent receives entire context. Use when sub-agent needs full history.
+2. **Instruction passing** — Sub-agent receives only task-specific instructions + minimal context. Use for most cases.
+3. **File system handoff** — Sub-agent reads/writes shared files. Use when state must persist beyond the call.
+
+### Handoff Rules
+- Pass the minimum context needed for the sub-task (not the entire conversation)
+- Include: task description, relevant facts only, output format expected
+- Exclude: conversation history, other sub-agent outputs, unrelated tool results
+- Validate sub-agent output before incorporating into parent context
+- Use `forward_message` pattern when sub-agent response should go directly to user
+
+### Token Economics
+| Architecture | Token Multiplier |
+|--------------|-----------------|
+| Single agent | 1× |
+| Single agent + tools | ~4× |
+| Multi-agent | ~15× |
+
+**Sentinel-specific handoffs:**
+- `failure-finder`, `questioner`, `structure-builder`: each receives neutralized decision frame only, not raw user input
+- `calibration-coach`: receives prediction text + outcome only, not full analysis context
+- `reality-checker`: receives specific claim to verify + domain only (instruction passing)
+
+## Anti-Patterns
+
+### Context Management
+- **Stuffing everything into context**: Load only what the current task needs. Long contexts are expensive and degrade performance.
+- **Not compressing before degradation**: Compression at 90% is too late — apply at 70-80% to stay ahead of degradation.
+- **Masking critical observations**: Never mask the most recent turn, active task observations, or current reasoning chain.
+- **No consolidation strategy**: Unbounded memory growth degrades retrieval quality over time.
+
+### Multi-Agent
+- **Anthropomorphizing sub-agents**: Sub-agents isolate context; they don't simulate org charts. Structure by context boundary, not by role name.
+- **Supervisor synthesis errors**: Supervisors paraphrase sub-agent responses and lose fidelity. Use `forward_message` for direct pass-through when possible.
+- **No output validation**: Always validate sub-agent output before incorporating into parent context.
+- **Unbounded execution**: Set time-to-live limits on all agent invocations.
+
+### Information Management
+- **Duplicate facts at different versions**: Keep one source of truth per fact. Multiple versions cause context clash.
+- **Ignoring temporal validity**: Facts go stale. Without validity tracking, outdated information poisons responses.
+- **Coherence as quality signal**: Coherent-sounding responses can be wrong. Use structured verification, not fluency.
+
+**Sentinel-specific**: Never run multiple decisions in one session — prior decision frames anchor the next analysis. One session = one decision. This is not a preference; it's an empirical requirement for valid MAP scoring.
+
 ## Skills Discovery Protocol
 
 On session start: reference bundle names + descriptions only. Load full skill content only when a domain-specific skill is activated. Never load all 6 skills simultaneously.
